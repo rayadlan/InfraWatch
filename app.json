@@ -1,0 +1,42 @@
+{
+  "expo": {
+    "name": "InfraWatch",
+    "slug": "infrawatch",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.example.infrawatch",
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "InfraWatch menggunakan lokasi untuk menandai posisi laporan infrastruktur.",
+        "NSPhotoLibraryUsageDescription": "InfraWatch membutuhkan akses galeri untuk melampirkan foto laporan.",
+        "NSCameraUsageDescription": "InfraWatch membutuhkan kamera untuk mengambil foto kondisi infrastruktur."
+      }
+    },
+    "android": {
+      "package": "com.example.infrawatch",
+      "permissions": [
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_FINE_LOCATION",
+        "CAMERA"
+      ]
+    },
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Izinkan InfraWatch mengakses foto untuk bukti laporan.",
+          "cameraPermission": "Izinkan InfraWatch menggunakan kamera untuk bukti laporan."
+        }
+      ],
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "Izinkan InfraWatch menggunakan lokasi saat aplikasi digunakan."
+        }
+      ]
+    ]
+  }
+}

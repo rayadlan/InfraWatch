@@ -1,0 +1,39 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    match /reports/{reportId} {
+      allow read: if true;
+
+      allow create: if signedIn()
+        && request.resource.data.reporterId == request.auth.uid
+        && request.resource.data.title is string
+        && request.resource.data.description is string
+        && request.resource.data.latitude is number
+        && request.resource.data.longitude is number;
+
+      // Prototype: status dan votes masih di-update dari client.
+      // voteFirebaseReport menggunakan Firestore Transaction + confirmation doc
+      // sehingga request normal dari aplikasi bersifat idempotent.
+      allow update: if signedIn();
+      allow delete: if false;
+    }
+
+    // Setiap user memiliki tepat satu dokumen konfirmasi per reportId:
+    // users/{uid}/confirmations/{reportId}
+    match /users/{userId}/confirmations/{reportId} {
+      allow read: if signedIn() && request.auth.uid == userId;
+
+      allow create: if signedIn()
+        && request.auth.uid == userId
+        && request.resource.data.userId == request.auth.uid
+        && request.resource.data.reportId == reportId;
+
+      // Konfirmasi tidak boleh diubah atau dihapus dari client.
+      allow update, delete: if false;
+    }
+  }
+}
